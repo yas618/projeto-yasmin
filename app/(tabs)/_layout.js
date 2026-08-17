@@ -34,10 +34,10 @@ export default function TabsLayout() {
           />
            />
           <Tabs.Screen
-              name="exemplo"
+              name="sobre"
               options={{
-                  title: 'Exemplo',
-                  headerTitle: 'Exemplo',
+                  title: 'Sobre',
+                  headerTitle: 'Sobre',
               }}
           />
       </Tabs>
