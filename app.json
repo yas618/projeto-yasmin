@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "projeto-yasmin",
+    "slug": "projeto-yasmin",
+    "scheme": "projeto-yasmin",
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
