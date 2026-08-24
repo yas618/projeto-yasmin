@@ -1,18 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   View,
   Text,
-  Image,
-  ActivityIndicator,
-  ScrollView,
+  TextInput,
+  Pressable,
   StyleSheet,
+  Alert,
+  ScrollView,
 } from "react-native";
-import axios from "axios";
 import { SafeAreaView } from "react-native-safe-area-context";
+import axios from "axios";
 
-const API_KEY =
-  "cv_U_G0aJrqnGS2FfbE2Sg38HmdafnUG83sa_BbfmUvyh95008WjFNjErgPivKPS7qO";
+// Em produção, uma chave de API não deveria morar direto no código do
+// app (dá pra extrair de qualquer APK/IPA instalado). Aqui, como é uma
+// API pública de estudo, deixamos direto no código pra simplificar.
+const API_KEY = "cv_iiGxAQJtukYyu3FWigTuP6YGn0p10Bxgxjdn16DF13ZSlBR3g7Msg-txhMsixadT";
 
+// Mesma instância do axios usada na tela de listagem, com o header já
+// configurado — toda chamada feita com "api" já sai autenticada.
 const api = axios.create({
   baseURL: "https://api-ds.codeverse.dev.br",
   headers: {
@@ -20,145 +25,151 @@ const api = axios.create({
   },
 });
 
-export default function JogosListarScreen() {
-  const [jogos, setJogos] = useState([]);
-  const [carregando, setCarregando] = useState(true);
-  const [erro, setErro] = useState(null);
+// ---------- POST: criar um herói novo ----------
+// Payload confirmado pra este tema: title, description e imageUrl
+// (genéricos) + universo, editora e grupo_principal (específicos do
+// tema heróis). category, year, ano_de_estreia, tipo_de_heroi e
+// situacao_do_heroi aparecem na documentação, mas não fazem parte do
+// corpo que a rota de criação realmente aceita.
+export default function JogosCriarScreen() {
+  const [titulo, setTitulo] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [imagemUrl, setImagemUrl] = useState("");
+  const [estudio, setEstudio] = useState("");
+  const [plataforma, setPlataforma] = useState("");
+  const [genero, setGenero] = useState("");
 
-  async function buscarJogos() {
-    setCarregando(true);
-    setErro(null);
+  const [enviando, setEnviando] = useState(false);
 
+  async function criarJogo() {
+    if (!titulo) {
+      Alert.alert("Preencha pelo menos o título.");
+      return;
+    }
+
+    setEnviando(true);
     try {
-      const resposta = await api.get("/api/jogos", {
-        params: {
-          limit: 50,
-        },
+      const resposta = await api.post("/api/jogos", {
+        title: titulo,
+        description: descricao,
+        imageUrl: imagemUrl,
+        studio: estudio,
+        platform: plataforma,
+        genre: genero,
       });
 
-      setJogos(resposta.data.data);
-    } catch (error) {
-      console.log(error);
-      setErro("Não foi possível carregar os jogos.");
+      Alert.alert("Jogo criado!", resposta.data.title);
+      setTitulo("");
+      setDescricao("");
+      setImagemUrl("");
+      setEstudio("");
+      setPlataforma("");
+      setGenero("");
+    } catch (e) {
+      Alert.alert(
+        "Não deu pra criar o jogo",
+        "A API respondeu com erro. Confere se todos os campos estão certinhos e tenta de novo."
+      );
     } finally {
-      setCarregando(false);
+      setEnviando(false);
     }
   }
-
-  useEffect(() => {
-    buscarJogos();
-  }, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.conteudo}>
         <View style={styles.header}>
-          <Text style={styles.tituloPagina}>Listar jogos</Text>
-          <Text style={styles.subtitulo}>GET /api/jogos</Text>
+          <Text style={styles.tituloPagina}>Criar jogo</Text>
+          <Text style={styles.subtitulo}>POST /api/jogos</Text>
         </View>
 
-        {carregando && (
-          <ActivityIndicator style={{ marginVertical: 16 }} />
-        )}
+        <Text style={styles.rotulo}>Título</Text>
+        <TextInput
+          style={styles.campo}
+          value={titulo}
+          onChangeText={setTitulo}
+          placeholder="Ex: Batman"
+        />
 
-        {erro && <Text style={styles.erro}>{erro}</Text>}
+        <Text style={styles.rotulo}>Descrição</Text>
+        <TextInput
+          style={styles.campo}
+          value={descricao}
+          onChangeText={setDescricao}
+          placeholder="Ex: Herói vigilante de Gotham City."
+        />
 
-        {!carregando &&
-          !erro &&
-          jogos.map((jogo) => (
-            <View key={jogo.id} style={styles.card}>
-              <Image
-                source={{ uri: jogo.imageUrl }}
-                style={styles.imagem}
-              />
+        <Text style={styles.rotulo}>URL da imagem</Text>
+        <TextInput
+          style={styles.campo}
+          value={imagemUrl}
+          onChangeText={setImagemUrl}
+          placeholder="Ex: https://exemplo.com/batman.jpg"
+        />
 
-              <View style={styles.info}>
-                <Text style={styles.titulo}>
-                  {jogo.title}
-                </Text>
+        <Text style={styles.secao}>Campos específicos do tema jogos</Text>
 
-                <Text style={styles.descricao}>
-                  {jogo.description}
-                </Text>
+        <Text style={styles.rotulo}>Estúdio</Text>
+        <TextInput
+          style={styles.campo}
+          value={estudio}
+          onChangeText={setEstudio}
+          placeholder="Ex: Rockstar Games"
+        />
 
-                <Text style={styles.categoria}>
-                  {jogo.category} · {jogo.year}
-                </Text>
-              </View>
-            </View>
-          ))}
+        <Text style={styles.rotulo}>Plataforma</Text>
+        <TextInput
+          style={styles.campo}
+          value={plataforma}
+          onChangeText={setPlataforma}
+          placeholder="Ex: XBOX"
+        />
+
+        <Text style={styles.rotulo}>Gênero</Text>
+        <TextInput
+          style={styles.campo}
+          value={genero}
+          onChangeText={setGenero}
+          placeholder="Ex: RPG"
+        />
+
+        <Pressable style={styles.botao} onPress={criarJogo} disabled={enviando}>
+          <Text style={styles.botaoTexto}>{enviando ? "Enviando..." : "Criar jogo"}</Text>
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#f8fbff",
-  },
-
-  conteudo: {
-    padding: 24,
-    paddingBottom: 48,
-  },
-
-  header: {
-    marginBottom: 16,
-  },
-
-  tituloPagina: {
-    fontSize: 24,
-    fontWeight: "800",
-    color: "#102542",
-  },
-
-  subtitulo: {
+  safeArea: { flex: 1, backgroundColor: "#f8fbff" },
+  conteudo: { padding: 24, paddingBottom: 48 },
+  header: { marginBottom: 16 },
+  tituloPagina: { fontSize: 24, fontWeight: "800", color: "#102542" },
+  subtitulo: { fontSize: 14, color: "#5f6b7a", marginTop: 2 },
+  secao: {
     fontSize: 14,
-    color: "#5f6b7a",
-    marginTop: 2,
-  },
-
-  erro: {
-    color: "#c62828",
-    marginTop: 12,
-  },
-
-  card: {
-    flexDirection: "row",
-    gap: 12,
-    marginTop: 12,
-    backgroundColor: "white",
-    borderRadius: 10,
-    overflow: "hidden",
-    paddingRight: 12,
-  },
-
-  imagem: {
-    width: 90,
-    height: 90,
-  },
-
-  info: {
-    flex: 1,
-    justifyContent: "center",
-  },
-
-  titulo: {
-    fontSize: 17,
     fontWeight: "700",
     color: "#102542",
+    marginTop: 8,
+    marginBottom: 8,
   },
 
-  descricao: {
-    fontSize: 13,
-    color: "#475569",
-    marginTop: 4,
+  rotulo: { fontSize: 13, fontWeight: "600", color: "#334155", marginBottom: 4 },
+  campo: {
+    borderWidth: 1,
+    borderColor: "#cbd5e1",
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 12,
+    backgroundColor: "white",
   },
-
-  categoria: {
-    fontSize: 13,
-    color: "#64748b",
-    marginTop: 5,
+  botao: {
+    backgroundColor: "#1565c0",
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: "center",
   },
+  botaoTexto: { color: "white", fontWeight: "700" },
 });
