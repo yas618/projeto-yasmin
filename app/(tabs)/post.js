@@ -27,9 +27,7 @@ export default function JogosCriarScreen() {
   const [estudio, setEstudio] = useState("");
   const [plataforma, setPlataforma] = useState("");
   const [genero, setGenero] = useState("");
-
   const [anoLancamento, setAnoLancamento] = useState("");
-
   const [enviando, setEnviando] = useState(false);
 
   async function criarJogo() {
@@ -40,7 +38,6 @@ export default function JogosCriarScreen() {
 
     setEnviando(true);
     try {
-
       const resposta = await api.post("/api/jogos", {
         title: titulo,
         description: descricao,
@@ -62,7 +59,6 @@ export default function JogosCriarScreen() {
       setAnoLancamento(""); 
       
     } catch (e) {
-
       console.log("ERRO DA API:", e.response?.data || e.message);
       Alert.alert(
         "Não deu pra criar o jogo",
@@ -87,6 +83,7 @@ export default function JogosCriarScreen() {
           value={titulo}
           onChangeText={setTitulo}
           placeholder="Ex: Batman: Arkham Knight"
+          placeholderTextColor="#ADB5BD"
         />
 
         <Text style={styles.rotulo}>Descrição</Text>
@@ -95,6 +92,7 @@ export default function JogosCriarScreen() {
           value={descricao}
           onChangeText={setDescricao}
           placeholder="Ex: O Cavaleiro das Trevas enfrenta o Espantalho..."
+          placeholderTextColor="#ADB5BD"
         />
 
         <Text style={styles.rotulo}>URL da imagem</Text>
@@ -103,6 +101,7 @@ export default function JogosCriarScreen() {
           value={imagemUrl}
           onChangeText={setImagemUrl}
           placeholder="Ex: https://exemplo.com/batman.jpg"
+          placeholderTextColor="#ADB5BD"
         />
 
         <Text style={styles.secao}>Campos específicos do tema jogos</Text>
@@ -113,6 +112,7 @@ export default function JogosCriarScreen() {
           value={estudio}
           onChangeText={setEstudio}
           placeholder="Ex: Rockstar Games"
+          placeholderTextColor="#ADB5BD"
         />
 
         <Text style={styles.rotulo}>Plataforma</Text>
@@ -121,6 +121,7 @@ export default function JogosCriarScreen() {
           value={plataforma}
           onChangeText={setPlataforma}
           placeholder="Ex: XBOX"
+          placeholderTextColor="#ADB5BD"
         />
 
         <Text style={styles.rotulo}>Gênero</Text>
@@ -129,6 +130,7 @@ export default function JogosCriarScreen() {
           value={genero}
           onChangeText={setGenero}
           placeholder="Ex: RPG"
+          placeholderTextColor="#ADB5BD"
         />
 
         <Text style={styles.rotulo}>Ano de Lançamento</Text>
@@ -138,6 +140,7 @@ export default function JogosCriarScreen() {
           onChangeText={setAnoLancamento}
           placeholder="Ex: 2015"
           keyboardType="numeric"
+          placeholderTextColor="#ADB5BD"
         />
 
         <Pressable style={styles.botao} onPress={criarJogo} disabled={enviando}>
@@ -149,34 +152,35 @@ export default function JogosCriarScreen() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#f8fbff" },
+  safeArea: { flex: 1, backgroundColor: "#F8F9FA" },
   conteudo: { padding: 24, paddingBottom: 48 },
   header: { marginBottom: 16 },
-  tituloPagina: { fontSize: 24, fontWeight: "800", color: "#102542" },
-  subtitulo: { fontSize: 14, color: "#5f6b7a", marginTop: 2 },
+  tituloPagina: { fontSize: 24, fontWeight: "800", color: "#D95D82" },
+  subtitulo: { fontSize: 14, color: "#495057", marginTop: 2 },
   secao: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#102542",
+    color: "#D95D82",
     marginTop: 8,
     marginBottom: 8,
   },
-
-  rotulo: { fontSize: 13, fontWeight: "600", color: "#334155", marginBottom: 4 },
+  rotulo: { fontSize: 13, fontWeight: "600", color: "#495057", marginBottom: 4 },
   campo: {
     borderWidth: 1,
-    borderColor: "#cbd5e1",
+    borderColor: "#CED4DA",
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
     marginBottom: 12,
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
+    color: "#495057",
   },
   botao: {
-    backgroundColor: "#1565c0",
+    backgroundColor: "#D95D82",
     paddingVertical: 14,
     borderRadius: 10,
     alignItems: "center",
+    marginTop: 8,
   },
-  botaoTexto: { color: "white", fontWeight: "700" },
+  botaoTexto: { color: "#FFFFFF", fontWeight: "700" },
 });

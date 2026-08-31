@@ -49,11 +49,19 @@ export default function TabsLayout() {
       /><Tabs.Screen
         name="post"
         options={{
-          title: "POST",
-          headerTitle: "POST",
+          title: "Post",
+          headerTitle: "Post",
+        }}
+      />
+       <Tabs.Screen
+        name="delete"
+        options={{
+          title: "Delete",
+          headerTitle: "Delete",
         }}
       />
     </Tabs>
+    
   );
 }
 

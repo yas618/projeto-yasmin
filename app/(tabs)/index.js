@@ -43,7 +43,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#f8fbff",
+    backgroundColor: "#F8F9FA",
   },
   container: {
     flex: 1,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     gap: 10,
     padding: 24,
     borderRadius: 24,
-    backgroundColor: "#0f62fe",
+    backgroundColor: "#D95D82",
   },
   logo: {
     width: 120,
@@ -67,46 +67,48 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     letterSpacing: 1,
     textTransform: "uppercase",
-    color: "#d0e2ff",
+    color: "#F8F9FA",
     textAlign: "center",
   },
   title: {
     fontSize: 32,
     fontWeight: "800",
-    color: "#ffffff",
+    color: "#FFFFFF",
     textAlign: "center",
   },
   description: {
     fontSize: 16,
     lineHeight: 24,
-    color: "#edf5ff",
+    color: "#F8F9FA",
     textAlign: "center",
   },
   card: {
     gap: 8,
     padding: 20,
     borderRadius: 20,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E9ECEF",
   },
   cardTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#102542",
+    color: "#495057",
   },
   cardItem: {
     fontSize: 15,
-    color: "#334e68",
+    color: "#495057",
   },
   button: {
     paddingVertical: 16,
     paddingHorizontal: 20,
     borderRadius: 16,
     alignItems: "center",
-    backgroundColor: "#102542",
+    backgroundColor: "#495057",
   },
   buttonText: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#ffffff",
+    color: "#FFFFFF",
   },
 });
