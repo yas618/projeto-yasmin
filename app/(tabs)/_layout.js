@@ -5,7 +5,7 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShadowVisible: false,
-        tabBarActiveTintColor: "#0f62fe",
+        tabBarActiveTintColor: "#D95D82",
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: "600",
@@ -53,10 +53,18 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
+        name="buscar"
+        options={{
+          title: "Buscar",
+          headerTitle: "Buscar Jogo",
+        }}
+      />
+
+      <Tabs.Screen
         name="post"
         options={{
           title: "Post",
-          headerTitle: "Post",
+          headerTitle: "Cadastrar Jogo",
         }}
       />
 
@@ -64,7 +72,7 @@ export default function TabsLayout() {
         name="delete"
         options={{
           title: "Delete",
-          headerTitle: "Delete",
+          headerTitle: "Excluir Jogo",
         }}
       />
 
@@ -72,7 +80,7 @@ export default function TabsLayout() {
         name="update"
         options={{
           title: "Update",
-          headerTitle: "Update",
+          headerTitle: "Atualizar Jogo",
         }}
       />
     </Tabs>

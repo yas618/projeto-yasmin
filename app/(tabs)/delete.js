@@ -12,7 +12,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
 
-const API_KEY = "cv_4Wzbmq_cSP52WLG8CRjj1ipOGbM4G0kFgT-e39euq91PKudf84jTsW3omAWsBsIO";
+const API_KEY =
+  "cv_U_G0aJrqnGS2FfbE2Sg38HmdafnUG83sa_BbfmUvyh95008WjFNjErgPivKPS7qO";
 
 const api = axios.create({
   baseURL: "https://api-ds.codeverse.dev.br",
@@ -30,13 +31,19 @@ export default function JogosExcluirScreen() {
   async function buscarJogos() {
     setCarregando(true);
     setErro(null);
+
     try {
       const resposta = await api.get("/api/jogos", {
-        params: { limit: 50 },
+        params: {
+          limit: 50,
+        },
       });
-      setJogos(resposta.data.data);
+
+      setJogos(resposta.data.data || []);
     } catch (e) {
-      setErro("Não foi possível carregar os jogos. Tenta de novo em instantes.");
+      setErro(
+        "Nao foi possivel carregar os jogos. Tente de novo em instantes."
+      );
     } finally {
       setCarregando(false);
     }
@@ -49,9 +56,12 @@ export default function JogosExcluirScreen() {
   function confirmarExclusao(jogo) {
     Alert.alert(
       "Excluir jogo",
-      `Tem certeza que quer excluir "${jogo.title}"? Essa ação não pode ser desfeita.`,
+      `Tem certeza que quer excluir "${jogo.title}"? Essa acao nao pode ser desfeita.`,
       [
-        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
         {
           text: "Excluir",
           style: "destructive",
@@ -63,13 +73,17 @@ export default function JogosExcluirScreen() {
 
   async function excluirJogo(id) {
     setExcluindoId(id);
+
     try {
       await api.delete(`/api/jogos/${id}`);
-      setJogos((atual) => atual.filter((item) => item.id !== id));
+
+      setJogos((atual) =>
+        atual.filter((item) => item.id !== id)
+      );
     } catch (e) {
       Alert.alert(
-        "Não deu pra excluir o jogo",
-        "A API respondeu com erro. Tenta de novo em instantes."
+        "Nao deu pra excluir o jogo",
+        "A API respondeu com erro. Tente de novo em instantes."
       );
     } finally {
       setExcluindoId(null);
@@ -80,30 +94,70 @@ export default function JogosExcluirScreen() {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.conteudo}>
         <View style={styles.header}>
-          <Text style={styles.tituloPagina}>Excluir jogo</Text>
-          <Text style={styles.subtitulo}>DELETE /api/jogos/:id</Text>
+          <Text style={styles.tituloPagina}>
+            Excluir jogos
+          </Text>
+
+          <Text style={styles.subtitulo}>
+            Excluir jogos cadastrados na API
+          </Text>
         </View>
 
-        {carregando && <ActivityIndicator color="#D95D82" style={{ marginVertical: 16 }} />}
-        {erro && <Text style={styles.erro}>{erro}</Text>}
+        {carregando && (
+          <ActivityIndicator
+            style={{ marginVertical: 16 }}
+            color="#D95D82"
+          />
+        )}
+
+        {erro && (
+          <Text style={styles.erro}>
+            {erro}
+          </Text>
+        )}
 
         {!carregando &&
           jogos.map((item) => (
-            <View key={item.id} style={styles.card}>
-              <Image source={{ uri: item.imageUrl }} style={styles.imagem} />
+            <View
+              key={item.id}
+              style={styles.card}
+            >
+              {item.imageUrl ? (
+                <Image
+                  source={{ uri: item.imageUrl }}
+                  style={styles.imagem}
+                />
+              ) : (
+                <View style={styles.semImagem}>
+                  <Text style={styles.semImagemTexto}>
+                    IMG
+                  </Text>
+                </View>
+              )}
+
               <View style={styles.info}>
-                <Text style={styles.titulo}>{item.title}</Text>
+                <Text style={styles.titulo}>
+                  {item.title}
+                </Text>
+
                 <Text style={styles.categoria}>
-                  {item.genero || item.universo} · {item.plataforma || item.poder}
+                  {item.genero} · {item.plataforma}
+                </Text>
+
+                <Text style={styles.ano}>
+                  {item.ano_lancamento} · {item.desenvolvedora}
                 </Text>
               </View>
+
               <Pressable
                 style={styles.botaoExcluir}
                 onPress={() => confirmarExclusao(item)}
                 disabled={excluindoId === item.id}
               >
                 <Text style={styles.botaoExcluirTexto}>
-                  {excluindoId === item.id ? "..." : "Excluir"}
+                  {excluindoId === item.id
+                    ? "..."
+                    : "Excluir"}
                 </Text>
               </Pressable>
             </View>
@@ -114,35 +168,111 @@ export default function JogosExcluirScreen() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#F8F9FA" },
-  conteudo: { padding: 24, paddingBottom: 48 },
-  header: { marginBottom: 16 },
-  tituloPagina: { fontSize: 24, fontWeight: "800", color: "#D95D82" },
-  subtitulo: { fontSize: 14, color: "#495057", marginTop: 2 },
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#F8F9FA",
+  },
 
-  erro: { color: "#D95D82", marginTop: 12, fontWeight: "600" },
+  conteudo: {
+    padding: 24,
+    paddingBottom: 48,
+  },
+
+  header: {
+    marginBottom: 16,
+  },
+
+  tituloPagina: {
+    fontSize: 24,
+    fontWeight: "800",
+    color: "#D95D82",
+  },
+
+  subtitulo: {
+    fontSize: 14,
+    color: "#495057",
+    marginTop: 2,
+  },
+
+  erro: {
+    color: "#D95D82",
+    marginTop: 12,
+  },
+
   card: {
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
     marginTop: 12,
     backgroundColor: "#FFFFFF",
+    borderColor: "#CED4DA",
+    borderWidth: 1,
     borderRadius: 10,
     overflow: "hidden",
     paddingRight: 12,
-    borderWidth: 1,
-    borderColor: "#E9ECEF",
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
   },
-  imagem: { width: 64, height: 64 },
-  info: { flex: 1, justifyContent: "center" },
-  titulo: { fontSize: 16, fontWeight: "700", color: "#495057" },
-  categoria: { fontSize: 13, color: "#6C757D" },
+
+  imagem: {
+    width: 64,
+    height: 64,
+    backgroundColor: "#FFEBEF",
+  },
+
+  semImagem: {
+    width: 64,
+    height: 64,
+    backgroundColor: "#FFEBEF",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  semImagemTexto: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#D95D82",
+  },
+
+  info: {
+    flex: 1,
+    justifyContent: "center",
+  },
+
+  titulo: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#212529",
+  },
+
+  categoria: {
+    fontSize: 13,
+    color: "#495057",
+    marginTop: 3,
+  },
+
+  ano: {
+    fontSize: 12,
+    color: "#6C757D",
+    marginTop: 3,
+  },
 
   botaoExcluir: {
     backgroundColor: "#D95D82",
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 8,
+    borderRadius: 10,
   },
-  botaoExcluirTexto: { color: "#FFFFFF", fontWeight: "700", fontSize: 13 },
+
+  botaoExcluirTexto: {
+    color: "#FFFFFF",
+    fontWeight: "700",
+    fontSize: 13,
+  },
 });
