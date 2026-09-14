@@ -19,6 +19,7 @@ export default function TabsLayout() {
           headerTitle: "Projeto Base",
         }}
       />
+
       <Tabs.Screen
         name="aulas"
         options={{
@@ -26,43 +27,54 @@ export default function TabsLayout() {
           headerTitle: "Conteúdo",
         }}
       />
-       <Tabs.Screen
+
+      <Tabs.Screen
         name="interface"
         options={{
           title: "Interface",
           headerTitle: "Interface",
         }}
       />
-       <Tabs.Screen
+
+      <Tabs.Screen
         name="sobre"
         options={{
           title: "Sobre",
           headerTitle: "Sobre",
         }}
       />
-       <Tabs.Screen
+
+      <Tabs.Screen
         name="api"
         options={{
           title: "API",
           headerTitle: "Conteúdo - API",
         }}
-      /><Tabs.Screen
+      />
+
+      <Tabs.Screen
         name="post"
         options={{
           title: "Post",
           headerTitle: "Post",
         }}
       />
-       <Tabs.Screen
+
+      <Tabs.Screen
         name="delete"
         options={{
           title: "Delete",
           headerTitle: "Delete",
         }}
       />
+
+      <Tabs.Screen
+        name="update"
+        options={{
+          title: "Update",
+          headerTitle: "Update",
+        }}
+      />
     </Tabs>
-    
   );
 }
-
-
