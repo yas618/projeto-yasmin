@@ -12,6 +12,7 @@ export default function TabsLayout() {
         },
       }}
     >
+      {/* Navegação Principal */}
       <Tabs.Screen
         name="index"
         options={{
@@ -52,6 +53,7 @@ export default function TabsLayout() {
         }}
       />
 
+      {/* Operações de Jogos (CRUD) */}
       <Tabs.Screen
         name="buscar"
         options={{
@@ -69,18 +71,18 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
-        name="delete"
-        options={{
-          title: "Delete",
-          headerTitle: "Excluir Jogo",
-        }}
-      />
-
-      <Tabs.Screen
         name="update"
         options={{
           title: "Update",
           headerTitle: "Atualizar Jogo",
+        }}
+      />
+
+      <Tabs.Screen
+        name="delete"
+        options={{
+          title: "Delete",
+          headerTitle: "Excluir Jogo",
         }}
       />
     </Tabs>
